@@ -3,8 +3,11 @@
 ## About
 The Lorenz96 model is a defact standard model in data assimilatin studies. The model is defined as follows.  
 ![Lorenz96](https://latex.codecogs.com/svg.latex?\frac{dx_{i}}{dt}=\left(x_{i+1}-x_{i-2}\right)x_{i-1}-x_{i}+F\left(\forall{i}=1,\ldots,N\right))  
-Here is an illustration of 40-variables Lorenz96 simulation result.
-![Lorenz96_img](figs/Perturbed.png) 
+Here is an illustration of 40-variables Lorenz96 simulation result for ![force8](https://latex.codecogs.com/svg.latex?F=8). 
+![Lorenz96_img](figs/Perturbed.png)  
+This model shows chaotic behaviour with ![force8](https://latex.codecogs.com/svg.latex?F=8), but shows
+periodic or more chaotic behaviours with ![force5](https://latex.codecogs.com/svg.latex?F=5) and ![force11](https://latex.codecogs.com/svg.latex?F=11). Using this model, we perform an observing system simulation
+experiment (OSSE) with the presence of model biases. We first perform raw simulations with ![force_range](https://latex.codecogs.com/svg.latex?F\in\left[5-11\right]) as `Nature` runs. We then add Gaussian noises to these simulation results of `Nature` runs to get mock `Observation` data. Our primary task is to predict the `Nature` run using the simulation states with ![force8](https://latex.codecogs.com/svg.latex?F=8) and the mock `Observation` data obtained from different `Nature` runs using multiple ![force](https://latex.codecogs.com/svg.latex?F) values with ![force_range](https://latex.codecogs.com/svg.latex?F\in\left[5-11\right]).
 
 ## Run
 To run simulations, several command line arguments are necessary. Following table summarizes the list of commad line arguments for run mode.
@@ -18,16 +21,17 @@ The detailed settings are defined in an input file stored in [cases/simulation](
 | Ensemble Run with EnKF | ```python run.py --model_name EnKF --filename enkf.json``` | Ensemble simulations with EnKF |
 | Ensemble Run with LETKF | ```python run.py --model_name LETKF --filename letkf.json``` | Ensemble simulations with LETKF |
 | Ensemble Run without DA | ```python run.py --model_name NoDA --filename debug_kf.json``` | Ensemble simulations without DA |
-| Run with ensemble Free DA | ```python run.py --model_name EFDA --filename efda.json``` | Simulation with ensemble free DA method |
+| Run with Generative EnKF | ```python run.py --model_name EFDA --filename efda.json``` | Simulation with Generative EnKF |
 
 ### Input parameters
 For input parameters, there are three categories `settings`, `grids`, and `simulation`.  
-For example, an input json file for [LETKF](../cases/simulation/letkf.json) is 
+1. LETKF
+An input json file for [LETKF](../cases/simulation/letkf.json) is 
 
 ```json
 {
     "settings": {
-        "out_dir": "/home/g0/a206230/work/letkf",
+        "out_dir": "<path-to-the-result-directory>",
         "case_name": "LETKF",
         "in_case_name": "Perturbed"
     },
@@ -46,14 +50,44 @@ For example, an input json file for [LETKF](../cases/simulation/letkf.json) is
         "u0_factor":1.001,
         "u0_idx":19,
         "n_ens":32,
-        "obs_interval":1,
+        "obs_interval":2,
         "kalman_filter":"letkf",
         "n_local":6,
-        "beta":1.0,
+        "beta":1.05,
         "sigma":1.0
     }
 }
 ```
+The simulation results with DA will be stored under `<out_dir/case_name>`. The observation data are assumed to be stored under `<out_dir/in_case_name>`. For OSSE with the presence of model biases, one needs to perform multiple `Nature` runs with different force paramter `F`.
+
+2. Generative EnKF
+An input json file for [Generative EnKF](../cases/simulation/efda.json) is  
+
+```json
+{
+    "settings": {
+        "out_dir": "<path-to-the-result-directory>",
+        "case_name": "EFDA",
+        "in_case_name": "Perturbed"
+    },
+    "nn_settings": {
+        "nn_model_type": "Denoising_Diffusion",
+        "batch_size": 1,
+        "inference_mode": true,
+        "model_dir": "/work/jh220030a/i18048/data/diffusion_test_obs2",
+        "da_steps": 1,
+        "kalman_filter":"letkf",
+        "n_ens": 32,
+        "F": 8,
+        "sampling_timesteps": 100,
+        "ddim_sampling_eta": 0.3,
+        "use_ddib": true,
+        "use_ensemble_mean": true,
+        "beta": 1.05
+    }
+}
+```
+The simulation results with DA will be stored under `<out_dir/case_name>`. The observation data are assumed to be stored under `<out_dir/in_case_name>`. Simulation settings are also loaded from the setting json file at `<out_dir/in_case_name>`. If the simulation parameters are also defined in `nn_settings`, parameters in `nn_settings` are priotized. The pretrained diffusion model state should be placed at `<out_dir/model_dir>`. The `obs_interval` for DA is automatically set from the input file of the pretrained model. 
 
 ## Use Lorenz96 simulator to construct dataset
 We use Lorenz96 simulator to construct the dataset for the deep learning model.
@@ -104,7 +138,7 @@ To visualize, several command line arguments are necessary. Following table summ
 The detailed settings are defined in an input file stored in [cases/simulation](../cases/simulation). 
 If the model works, a symbolic link `<case_name>` to `<out_dir>/<case_name>/imgs` will be created wherein the simulation results are stored. 
 Both `<case_name>` and `<out_dir>` are set in the input file as described in the following. 
-For LESs, we need to complete DNS run beforehand, which is used as Ground Truth.
+For OSSE, we need to complete DNS run beforehand, which is used as Ground Truth.
 
 | Run mode | Command | Explanation |
 | --- | --- | --- |
@@ -114,21 +148,21 @@ For LESs, we need to complete DNS run beforehand, which is used as Ground Truth.
 | Ensemble Run with EnKF | ```python post.py --model_name EnKF --filename enkf.json``` | Ensemble simulations with EnKF |
 | Ensemble Run with LETKF | ```python post.py --model_name LETKF --filename letkf.json``` | Ensemble simulations with LETKF |
 | Ensemble Run without DA| ```python post.py --model_name NoDA --filename debug_kf.json``` | Ensemble simulations without DA |
-| Run with ensemble Free DA | ```python post.py --model_name EFDA --filename efda.json``` | Simulation with ensemble free DA method |
-| Run with RL-DA | ```python post.py -dirname cases/rl_model --model_name SoftActorCritic --filename soft_actor_critic.json``` | Simulation with RL-DA method |
+| Run with Generative EnKF | ```python post.py --model_name EFDA --filename efda.json``` | Simulation with Generative EnKF |
 
 ## Reference
 ```bibtex
-@phdthesis{Lorenz96,
-  author = {E.N. Lorenz},
-  title = {Predictability: a problem partly solved},
-  year = {1995},
-  journal = {Seminar on Predictability, 4-8 September 1995},
-  volume = {1},
-  pages = {1-18},
-  month = {1995},
-  publisher = {ECMWF},
-  address = {Shinfield Park, Reading},
-  language = {eng},
+@article {Lorenz96,
+      author = "Edward N. Lorenz and Kerry A. Emanuel",
+      title = "Optimal Sites for Supplementary Weather Observations: Simulation with a Small Model",
+      journal = "Journal of the Atmospheric Sciences",
+      year = "1998",
+      publisher = "American Meteorological Society",
+      address = "Boston MA, USA",
+      volume = "55",
+      number = "3",
+      doi = "https://doi.org/10.1175/1520-0469(1998)055<0399:OSFSWO>2.0.CO;2",
+      pages = "399 - 414",
+      url = "https://journals.ametsoc.org/view/journals/atsc/55/3/1520-0469_1998_055_0399_osfswo_2.0.co_2.xml"
 }
 ```

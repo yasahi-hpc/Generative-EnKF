@@ -1,0 +1,25 @@
+{
+    "settings": {
+        "out_dir": "/work/jh220030a/i18048/data",
+        "case_name": "Nudging",
+        "in_case_name": "Perturbed"
+    },
+    "grids": {
+        "Nx":40
+    },
+    "simulation": {
+        "model": "DNS",
+        "F":8,
+        "diag_chunk":10,
+        "diag_steps":1,
+        "dt":0.05,
+        "mode":"default",
+        "perturbation_amp":0.00001,
+        "nbiter":720,
+        "u0_factor":1.001,
+        "u0_idx":19,
+        "alpha":0.5,
+        "noise_level":1,
+        "obs_interval":1
+    }
+}

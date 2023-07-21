@@ -1,0 +1,20 @@
+{
+    "settings": {
+        "out_dir": "/work/jh220030a/i18048/data",
+        "case_name": "DNS"
+    },
+    "grids": {
+        "Nx":40
+    },
+    "simulation": {
+        "model": "DNS",
+        "F":8,
+        "diag_chunk":10,
+        "diag_steps":1,
+        "dt":0.05,
+        "mode":"default",
+        "nbiter":720,
+        "u0_factor":1.001,
+        "u0_idx":19
+    }
+}

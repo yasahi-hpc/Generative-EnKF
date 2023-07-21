@@ -27,7 +27,7 @@ If the code works appropriately, checkpoint and imgs directories are created und
 
 ## Input parameters
 For input parameters, there are three categories `settings`, `grids`, and `simulation`.  
-For example, an input json file for [Diffusion](../cases/model/diffusion_obs2.json) is
+For example, an input json file for [diffusion model](../cases/model/diffusion_obs2.json) is
 
 ```json
 {
@@ -53,3 +53,6 @@ For example, an input json file for [Diffusion](../cases/model/diffusion_obs2.js
     }
 }
 ```
+
+The dataset are loaded from `<in_dir>`, which should be constructed by the simulator. 
+The training results will be stored under `<out_dir/case_name>`. By default, the latest model state `model_checkpoint*.pt` is used for the diffusion model in Generative EnKF.

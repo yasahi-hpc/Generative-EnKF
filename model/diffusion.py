@@ -1,3 +1,13 @@
+"""
+The implementation of diffusion model is based on 
+https://github.com/lucidrains/denoising-diffusion-pytorch
+
+1D diffusion model (denoising_diffusion_pytorch_1d.py) is coupled with classifier-free-guidance version (classifier_free_guidance.py).
+
+[Experimental] We also implemented physics-informed-diffusion based on
+https://github.com/BaratiLab/Diffusion-based-Fluid-Super-resolution
+"""
+
 import math
 import pathlib
 import torch

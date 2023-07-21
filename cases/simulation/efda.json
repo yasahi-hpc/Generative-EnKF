@@ -1,0 +1,22 @@
+{
+    "settings": {
+        "out_dir": "/work/jh220030a/i18048/data",
+        "case_name": "EFDA",
+        "in_case_name": "Perturbed"
+    },
+    "nn_settings": {
+        "nn_model_type": "Denoising_Diffusion",
+        "batch_size": 1,
+        "inference_mode": true,
+        "model_dir": "/work/jh220030a/i18048/data/diffusion_test_obs2",
+        "da_steps": 1,
+        "kalman_filter":"letkf",
+        "n_ens": 32,
+        "F": 8,
+        "sampling_timesteps": 100,
+        "ddim_sampling_eta": 0.3,
+        "use_ddib": true,
+        "use_ensemble_mean": true,
+        "beta": 1.05
+    }
+}

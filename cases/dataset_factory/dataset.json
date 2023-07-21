@@ -1,0 +1,19 @@
+{
+    "settings": {
+        "in_dir": "/home/g0/a206230/work/letkf/dataset",
+        "case_name": "diffusion_test",
+        "out_dir": "/home/g0/a206230/work/letkf/training"
+    },
+    "simulation": {
+        "F": 8,
+        "obs_interval": 1,
+        "n_local":6
+    },
+    "nn_model": {
+        "lr": 0.001,
+        "beta_1": 0.9,
+        "beta_2": 0.999,
+        "n_epochs": 100,
+        "batch_size": 16
+    }
+}
