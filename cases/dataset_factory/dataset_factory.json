@@ -1,0 +1,26 @@
+{
+    "settings": {
+        "out_dir": "/work/jh220030a/i18048/data",
+        "case_name": "Dataset_factory",
+        "in_case_name": "Perturbed"
+    },
+    "grids": {
+        "Nx":40
+    },
+    "simulation": {
+        "model": "DNS",
+        "F":8,
+        "diag_chunk":10,
+        "diag_steps":1,
+        "dt":0.05,
+        "mode":"default",
+        "perturbation_amp":0.00001,
+        "nbiter":1000,
+        "u0_factor":1.01,
+        "u0_idx":19,
+        "n_ens":100,
+        "kalman_filter":"none_kf",
+        "random_init":true,
+        "obs_interval":1
+    }
+}

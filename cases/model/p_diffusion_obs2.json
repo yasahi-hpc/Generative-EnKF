@@ -1,0 +1,23 @@
+{
+    "settings": {
+        "in_dir": "/work/jh220030a/i18048/data/Dataset_factory/dataset",
+        "case_name": "p_diffusion_test_obs2",
+        "out_dir": "/work/jh220030a/i18048/data/train_v2"
+    },
+    "simulation": {
+        "F": 8,
+        "obs_interval": 2,
+        "n_local":6
+    },
+    "nn_model": {
+        "lr": 0.001,
+        "beta_1": 0.9,
+        "beta_2": 0.999,
+        "train_num_steps": 100000,
+        "n_freq_eval": 1000,
+        "n_freq_sample_checkpoint": 1000,
+        "batch_size": 16,
+        "prob_uncond": 0.1,
+        "preprocess_type": "normalization"
+    }
+}
