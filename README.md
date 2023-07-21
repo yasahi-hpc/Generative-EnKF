@@ -1,5 +1,9 @@
 # Generative Ensemble Kalman Filter
 _Generative EnKF_ is designed to surrogate data assimilation for numerical simulations without ensemble runs.
+<div style style=”line-height: 25%” align="center">
+<h3> Generate pseudo ensembles with an observation guided diffusion model </h3>
+<img src=docs/figs/diffuion_overview.png>
+</div>
 
 [![CI](https://github.com/yasahi-hpc/Generative-EnKF/actions/workflows/ci.yml/badge.svg)](https://github.com/yasahi-hpc/Generative-EnKF/actions)
 
@@ -31,5 +35,6 @@ For simulation, we rely on the [simulation codes](docs/simulation.md) and the pr
       volume={},
       number={},
       pages={},
-      keywords = {Deep learning; Graphics-processing-unit-based computing; Data Assimilation; Lorenz96}
+      keywords = {Deep learning; Graphics-processing-unit-based computing; Data Assimilation; Lorenz96},
+}
 ```
