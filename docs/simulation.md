@@ -133,7 +133,7 @@ To visualize, several command line arguments are necessary. Following table summ
 The detailed settings are defined in an input file stored in [cases/simulation](../cases/simulation). 
 If the model works, a symbolic link `<case_name>` to `<out_dir>/<case_name>/imgs` will be created wherein the simulation results are stored. 
 Both `<case_name>` and `<out_dir>` are set in the input file as described in the following. 
-For LESs, we need to complete DNS run beforehand, which is used as Ground Truth.
+For OSSE, we need to complete DNS run beforehand, which is used as Ground Truth.
 
 | Run mode | Command | Explanation |
 | --- | --- | --- |
