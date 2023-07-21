@@ -25,7 +25,18 @@ Firstly, one needs to construct a dataset and train the model for that.
 See [deep learning model](docs/dl_model.md) for detail. 
 
 ## Simulation with Generative EnKF
-For simulation, we rely on the [simulation codes](docs/simulation.md) and the pretrained diffusion model. 
+For simulation, we rely on the [simulation codes](docs/simulation.md) and the pretrained diffusion model.
+
+## Brief explanations of scripts
+Following table summarizes the major scripts and their inputs.
+| Scripts | Arguments| Explanation |
+| --- | --- | --- |
+| `run.py` | `-dirname` `--filename` `--model_name` | Running a simulation |
+| `train.py` | `-dirname` `--filename` `--model_name` `--inference_mode` | Training or inference |
+| `post.py` | `-dirname` `--filename` `--model_name` | Postscript for simulations or trained models |
+| `convert.py` | `-dirname` `--filename` `--mode` `--start_idx` `--end_idx` | Convert the simulatin data into dataset |
+| `setup.py` |  | Install the required packages |
+| `cleanup.py` | `symdir` `--verbose` | Erase the result directory and symbolic link (Be careful to use this!) |
 
 ## Citations
 ```bibtex
