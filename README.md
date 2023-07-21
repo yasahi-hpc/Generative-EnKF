@@ -24,8 +24,25 @@ Before running simulation with Generative EnKF, we need to train a diffusion mod
 Firstly, one needs to construct a dataset and train the model for that.
 See [deep learning model](docs/dl_model.md) for detail. 
 
-## Simulation with Generative EnKF
-For simulation, we rely on the [simulation codes](docs/simulation.md) and the pretrained diffusion model.
+## Simulation with Generative EnKF 
+For simulation, we rely on the [simulation codes](docs/simulation.md) and the pretrained diffusion model. We perform an observing system simulation experiment (OSSE) for Lorenz96 system. To try data assimilation (DA), you may compare the twin simulations with and without DA.
+For DA, you can use LETKF or Generative EnKF (EFDA). We use 32 ensembles for LETKF.
+One needs to run a nature simulation followd by DA simulations. 
+We can perform the OSSE of Lorenz96 in the following manner:
+1. Create observation data with `Nature` run
+```bash
+python run.py --filename dns.json
+```
+
+The results would be stored in netcdf files under `<base_dir/case_name>`.
+
+2. DA simulation
+You can perform simulation with LETKF or Generative EnKF by
+```bash
+python run.py --model_name [LETKF, EFDA] --filename [letkf.json, efda.json]
+```
+
+See [simulation codes](docs/simulation.md) for detail.
 
 ## Brief explanations of scripts
 Following table summarizes the major scripts and their inputs.
