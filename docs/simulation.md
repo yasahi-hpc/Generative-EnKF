@@ -50,15 +50,15 @@ An input json file for [LETKF](../cases/simulation/letkf.json) is
         "u0_factor":1.001,
         "u0_idx":19,
         "n_ens":32,
-        "obs_interval":1,
+        "obs_interval":2,
         "kalman_filter":"letkf",
         "n_local":6,
-        "beta":1.0,
+        "beta":1.05,
         "sigma":1.0
     }
 }
 ```
-The simulation results with DA will be stored under `<out_dir/case_name>`. The observation data are assumed to be stored under `<out_dir/in_case_name>`.
+The simulation results with DA will be stored under `<out_dir/case_name>`. The observation data are assumed to be stored under `<out_dir/in_case_name>`. For OSSE with the presence of model biases, one needs to perform multiple `Nature` runs with different force paramter `F`.
 
 2. Generative EnKF
 An input json file for [Generative EnKF](../cases/simulation/efda.json) is  
@@ -71,18 +71,23 @@ An input json file for [Generative EnKF](../cases/simulation/efda.json) is
         "in_case_name": "Perturbed"
     },
     "nn_settings": {
-        "nn_model_type": "nn",
+        "nn_model_type": "Denoising_Diffusion",
         "batch_size": 1,
         "inference_mode": true,
-        "model_dir": "diffusion_test_obs2",
+        "model_dir": "/work/jh220030a/i18048/data/diffusion_test_obs2",
         "da_steps": 1,
-        "kalman_filter":"none_kf",
-        "n_ens": 32
+        "kalman_filter":"letkf",
+        "n_ens": 32,
+        "F": 8,
+        "sampling_timesteps": 100,
+        "ddim_sampling_eta": 0.3,
+        "use_ddib": true,
+        "use_ensemble_mean": true,
+        "beta": 1.05
     }
 }
 ```
-The simulation results with DA will be stored under `<out_dir/case_name>`. The observation data are assumed to be stored under `<out_dir/in_case_name>`. Simulation settings are also loaded from the setting json file at `<out_dir/in_case_name>`.
-The pretrained diffusion model state should be placed at `<out_dir/model_dir>`.
+The simulation results with DA will be stored under `<out_dir/case_name>`. The observation data are assumed to be stored under `<out_dir/in_case_name>`. Simulation settings are also loaded from the setting json file at `<out_dir/in_case_name>`. If the simulation parameters are also defined in `nn_settings`, parameters in `nn_settings` are priotized. The pretrained diffusion model state should be placed at `<out_dir/model_dir>`. The `obs_interval` for DA is automatically set from the input file of the pretrained model. 
 
 ## Use Lorenz96 simulator to construct dataset
 We use Lorenz96 simulator to construct the dataset for the deep learning model.
