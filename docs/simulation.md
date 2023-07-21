@@ -25,7 +25,8 @@ The detailed settings are defined in an input file stored in [cases/simulation](
 
 ### Input parameters
 For input parameters, there are three categories `settings`, `grids`, and `simulation`.  
-For example, an input json file for [LETKF](../cases/simulation/letkf.json) is 
+1. LETKF
+An input json file for [LETKF](../cases/simulation/letkf.json) is 
 
 ```json
 {
@@ -57,7 +58,31 @@ For example, an input json file for [LETKF](../cases/simulation/letkf.json) is
     }
 }
 ```
-The simulation results will be stored under `out_dir`.
+The simulation results with DA will be stored under `<out_dir/case_name>`. The observation data are assumed to be stored under `<out_dir/in_case_name>`.
+
+2. Generative EnKF
+An input json file for [Generative EnKF](../cases/simulation/efda.json) is  
+
+```json
+{
+    "settings": {
+        "out_dir": "<path-to-the-result-directory>",
+        "case_name": "EFDA",
+        "in_case_name": "Perturbed"
+    },
+    "nn_settings": {
+        "nn_model_type": "nn",
+        "batch_size": 1,
+        "inference_mode": true,
+        "model_dir": "diffusion_test_obs2",
+        "da_steps": 1,
+        "kalman_filter":"none_kf",
+        "n_ens": 32
+    }
+}
+```
+The simulation results with DA will be stored under `<out_dir/case_name>`. The observation data are assumed to be stored under `<out_dir/in_case_name>`. Simulation settings are also loaded from the setting json file at `<out_dir/in_case_name>`.
+The pretrained diffusion model state should be placed at `<out_dir/model_dir>`.
 
 ## Use Lorenz96 simulator to construct dataset
 We use Lorenz96 simulator to construct the dataset for the deep learning model.
@@ -124,7 +149,7 @@ For LESs, we need to complete DNS run beforehand, which is used as Ground Truth.
 ```bibtex
 @article {Lorenz96,
       author = "Edward N. Lorenz and Kerry A. Emanuel",
-      title = {{Optimal Sites for Supplementary Weather Observations: Simulation with a Small Model}},
+      title = "Optimal Sites for Supplementary Weather Observations: Simulation with a Small Model",
       journal = "Journal of the Atmospheric Sciences",
       year = "1998",
       publisher = "American Meteorological Society",
